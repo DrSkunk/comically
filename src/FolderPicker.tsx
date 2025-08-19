@@ -182,38 +182,3 @@ export function FolderPicker({ accessToken, onFolderSelected, onBack }: FolderPi
     </div>
   );
 }
-
-  if (!authContext) {
-    return <div>Authentication context not available</div>;
-  }
-
-  const { pickFolder, accessToken } = authContext;
-
-  const handlePickFolder = async () => {
-    if (!accessToken) {
-      alert("Please log in first");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const folder = await pickFolder();
-      setSelectedFolder(folder);
-    } catch (error) {
-      console.error("Error picking folder:", error);
-      alert(
-        "Error picking folder. Make sure VITE_GOOGLE_API_KEY is set in your environment variables."
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-            </div>
-      </div>
-    </div>
-  );
-}
-  );
-}
