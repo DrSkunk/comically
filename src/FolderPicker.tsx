@@ -1,7 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Folder, ChevronRight, BookOpen, ArrowLeft, Loader2 } from 'lucide-react';
-import { GoogleDriveService } from './services/googleDriveService';
-import type { GoogleDriveFile } from './types';
+import { useState, useEffect } from "react";
+import {
+  Folder,
+  ChevronRight,
+  BookOpen,
+  ArrowLeft,
+  Loader2,
+} from "lucide-react";
+import { GoogleDriveService } from "./services/googleDriveService";
+import type { GoogleDriveFile } from "./types";
 
 interface FolderPickerProps {
   accessToken: string;
@@ -9,10 +15,14 @@ interface FolderPickerProps {
   onBack: () => void;
 }
 
-export function FolderPicker({ accessToken, onFolderSelected, onBack }: FolderPickerProps) {
-  const [currentFolder, setCurrentFolder] = useState<string>('root');
+export function FolderPicker({
+  accessToken,
+  onFolderSelected,
+  onBack,
+}: FolderPickerProps) {
+  const [currentFolder, setCurrentFolder] = useState<string>("root");
   const [folderPath, setFolderPath] = useState<{ id: string; name: string }[]>([
-    { id: 'root', name: 'My Drive' }
+    { id: "root", name: "My Drive" },
   ]);
   const [folders, setFolders] = useState<GoogleDriveFile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,13 +37,15 @@ export function FolderPicker({ accessToken, onFolderSelected, onBack }: FolderPi
   const loadFolders = async (folderId: string) => {
     setLoading(true);
     setError(null);
-    
+
     try {
-      const { folders: folderList } = await driveService.getFolderStructure(folderId);
+      const { folders: folderList } = await driveService.getFolderStructure(
+        folderId
+      );
       setFolders(folderList);
     } catch (err) {
-      console.error('Failed to load folders:', err);
-      setError('Failed to load folders. Please check your permissions.');
+      console.error("Failed to load folders:", err);
+      setError("Failed to load folders. Please check your permissions.");
     } finally {
       setLoading(false);
     }
@@ -100,13 +112,15 @@ export function FolderPicker({ accessToken, onFolderSelected, onBack }: FolderPi
           <nav className="flex items-center space-x-2 text-sm">
             {folderPath.map((folder, index) => (
               <div key={folder.id} className="flex items-center">
-                {index > 0 && <ChevronRight className="w-4 h-4 text-gray-400 mx-1" />}
+                {index > 0 && (
+                  <ChevronRight className="w-4 h-4 text-gray-400 mx-1" />
+                )}
                 <button
                   onClick={() => navigateToParent(index)}
                   className={`hover:text-blue-600 transition-colors ${
-                    index === folderPath.length - 1 
-                      ? 'text-gray-900 font-medium' 
-                      : 'text-gray-600'
+                    index === folderPath.length - 1
+                      ? "text-gray-900 font-medium"
+                      : "text-gray-600"
                   }`}
                 >
                   {folder.name}
@@ -149,9 +163,7 @@ export function FolderPicker({ accessToken, onFolderSelected, onBack }: FolderPi
                 <h3 className="font-medium text-gray-900 truncate">
                   {folder.name}
                 </h3>
-                <p className="text-sm text-gray-500 mt-1">
-                  Folder
-                </p>
+                <p className="text-sm text-gray-500 mt-1">Folder</p>
               </button>
             ))}
           </div>
@@ -170,9 +182,11 @@ export function FolderPicker({ accessToken, onFolderSelected, onBack }: FolderPi
           <div className="flex items-start space-x-3">
             <BookOpen className="w-5 h-5 text-blue-600 mt-0.5" />
             <div className="text-sm text-blue-800">
-              <p className="font-medium mb-1">Choose your comic library folder</p>
+              <p className="font-medium mb-1">
+                Choose your comic library folder
+              </p>
               <p>
-                Select a folder that contains subfolders for each comic series. 
+                Select a folder that contains subfolders for each comic series.
                 Each series folder should contain CBR/CBZ files.
               </p>
             </div>

@@ -32,7 +32,7 @@ export class GoogleDriveService {
     includeShared: boolean = true
   ): Promise<{ files: GoogleDriveFile[]; nextPageToken?: string }> {
     let query = `'${folderId}' in parents and trashed=false`;
-    
+
     // Include files shared with the user
     if (includeShared) {
       query = `(${query}) or (sharedWithMe=true and '${folderId}' in parents and trashed=false)`;
@@ -40,7 +40,8 @@ export class GoogleDriveService {
 
     const params = new URLSearchParams({
       q: query,
-      fields: "nextPageToken,files(id,name,mimeType,parents,modifiedTime,size,shared,sharingUser)",
+      fields:
+        "nextPageToken,files(id,name,mimeType,parents,modifiedTime,size,shared,sharingUser)",
       pageSize: "100",
       supportsAllDrives: "true",
       includeItemsFromAllDrives: "true",
@@ -72,47 +73,57 @@ export class GoogleDriveService {
 
     try {
       // Get folders from "My Drive"
-      const myDriveResponse = await this.listFiles('root', undefined, false);
+      const myDriveResponse = await this.listFiles("root", undefined, false);
       const myDriveFolders = myDriveResponse.files.filter(
-        file => file.mimeType === 'application/vnd.google-apps.folder'
+        (file) => file.mimeType === "application/vnd.google-apps.folder"
       );
       allFolders = allFolders.concat(myDriveFolders);
 
       // Get shared drives
-      const sharedDrivesResponse = await this.makeRequest('/drives?fields=drives(id,name)');
+      const sharedDrivesResponse = await this.makeRequest(
+        "/drives?fields=drives(id,name)"
+      );
       const sharedDrives = sharedDrivesResponse.drives || [];
-      
+
       // Convert shared drives to folder format
-      const sharedDriveFolders: GoogleDriveFile[] = sharedDrives.map((drive: { id: string; name: string }) => ({
-        id: drive.id,
-        name: `[Shared Drive] ${drive.name}`,
-        mimeType: 'application/vnd.google-apps.folder',
-        shared: true,
-      }));
+      const sharedDriveFolders: GoogleDriveFile[] = sharedDrives.map(
+        (drive: { id: string; name: string }) => ({
+          id: drive.id,
+          name: `[Shared Drive] ${drive.name}`,
+          mimeType: "application/vnd.google-apps.folder",
+          shared: true,
+        })
+      );
       allFolders = allFolders.concat(sharedDriveFolders);
 
       // Get folders shared with me (but not in shared drives)
       const sharedWithMeResponse = await this.makeRequest(
         `/files?q=sharedWithMe=true and mimeType='application/vnd.google-apps.folder' and trashed=false&fields=files(id,name,mimeType,parents,modifiedTime,size,shared,sharingUser)&supportsAllDrives=true&includeItemsFromAllDrives=true`
       );
-      
+
       // Filter out folders that are already in shared drives or are children of other folders
-      const sharedFolders = sharedWithMeResponse.files.filter((file: GoogleDriveFile) => {
-        // Only include top-level shared folders (no parents or parents not accessible)
-        return !file.parents || file.parents.length === 0 || 
-               !allFolders.some(folder => file.parents?.includes(folder.id));
-      });
+      const sharedFolders = sharedWithMeResponse.files.filter(
+        (file: GoogleDriveFile) => {
+          // Only include top-level shared folders (no parents or parents not accessible)
+          return (
+            !file.parents ||
+            file.parents.length === 0 ||
+            !allFolders.some((folder) => file.parents?.includes(folder.id))
+          );
+        }
+      );
 
       // Mark shared folders with a prefix
-      const markedSharedFolders = sharedFolders.map((folder: GoogleDriveFile) => ({
-        ...folder,
-        name: `[Shared] ${folder.name}`,
-      }));
+      const markedSharedFolders = sharedFolders.map(
+        (folder: GoogleDriveFile) => ({
+          ...folder,
+          name: `[Shared] ${folder.name}`,
+        })
+      );
 
       allFolders = allFolders.concat(markedSharedFolders);
-
     } catch (error) {
-      console.warn('Some shared content could not be loaded:', error);
+      console.warn("Some shared content could not be loaded:", error);
     }
 
     return allFolders;
@@ -155,11 +166,17 @@ export class GoogleDriveService {
   }
 
   // Get folder contents recursively
-  async getFolderStructure(folderId: string): Promise<{ folders: GoogleDriveFile[]; files: GoogleDriveFile[] }> {
+  async getFolderStructure(
+    folderId: string
+  ): Promise<{ folders: GoogleDriveFile[]; files: GoogleDriveFile[] }> {
     const allFiles = await this.getAllFilesInFolder(folderId);
-    
-    const folders = allFiles.filter(file => file.mimeType === 'application/vnd.google-apps.folder');
-    const files = allFiles.filter(file => file.mimeType !== 'application/vnd.google-apps.folder');
+
+    const folders = allFiles.filter(
+      (file) => file.mimeType === "application/vnd.google-apps.folder"
+    );
+    const files = allFiles.filter(
+      (file) => file.mimeType !== "application/vnd.google-apps.folder"
+    );
 
     return { folders, files };
   }

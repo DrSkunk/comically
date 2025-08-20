@@ -538,20 +538,14 @@ export function ComicReader({
 
       {/* Top Controls */}
       <div
-        className={`absolute top-0 left-0 right-0 bg-gradient-to-b from-black/70 to-transparent p-4 transition-opacity duration-300 z-10 ${
-          showControls
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+        className={`absolute top-0 left-0 right-0 bg-gradient-to-b from-black/70 to-transparent p-4 transition-opacity duration-300 ${
+          showControls ? "opacity-100" : "opacity-0"
         }`}
-        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onBack();
-              }}
+              onClick={onBack}
               className="flex items-center space-x-2 text-white hover:text-gray-300 transition-colors"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -568,19 +562,13 @@ export function ComicReader({
 
           <div className="flex items-center space-x-2">
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleFullscreen();
-              }}
+              onClick={toggleFullscreen}
               className="p-2 text-white hover:text-gray-300 transition-colors"
             >
               <Maximize className="w-5 h-5" />
             </button>
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowSettings(!showSettings);
-              }}
+              onClick={() => setShowSettings(!showSettings)}
               className="p-2 text-white hover:text-gray-300 transition-colors"
             >
               <Settings className="w-5 h-5" />
@@ -591,12 +579,9 @@ export function ComicReader({
 
       {/* Bottom Controls */}
       <div
-        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 transition-opacity duration-300 z-10 ${
-          showControls
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 transition-opacity duration-300 ${
+          showControls ? "opacity-100" : "opacity-0"
         }`}
-        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -614,10 +599,7 @@ export function ComicReader({
           {!isContinuousMode && (
             <div className="flex items-center space-x-2">
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  zoomOut();
-                }}
+                onClick={zoomOut}
                 className="p-2 text-white hover:text-gray-300 transition-colors"
               >
                 <ZoomOut className="w-5 h-5" />
@@ -626,19 +608,13 @@ export function ComicReader({
                 {Math.round(zoom * 100)}%
               </span>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  zoomIn();
-                }}
+                onClick={zoomIn}
                 className="p-2 text-white hover:text-gray-300 transition-colors"
               >
                 <ZoomIn className="w-5 h-5" />
               </button>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  resetView();
-                }}
+                onClick={resetView}
                 className="p-2 text-white hover:text-gray-300 transition-colors"
               >
                 <RotateCcw className="w-5 h-5" />

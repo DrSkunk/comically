@@ -15,7 +15,8 @@ export function LoginPage({ onLoginSuccess }: LoginPageProps) {
     onError: (error) => {
       console.error("Login failed:", error);
     },
-    scope: "https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.metadata.readonly",
+    scope:
+      "https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.metadata.readonly",
   });
 
   return (

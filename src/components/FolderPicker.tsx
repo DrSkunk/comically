@@ -40,8 +40,8 @@ export function FolderPicker({
 
     try {
       let folderList: GoogleDriveFile[];
-      
-      if (folderId === 'root') {
+
+      if (folderId === "root") {
         // Load root folders including shared drives and shared folders
         folderList = await driveService.getRootFolders();
       } else {
@@ -49,7 +49,7 @@ export function FolderPicker({
         const { folders } = await driveService.getFolderStructure(folderId);
         folderList = folders;
       }
-      
+
       setFolders(folderList);
     } catch (err) {
       console.error("Failed to load folders:", err);
@@ -166,12 +166,14 @@ export function FolderPicker({
                 className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md hover:border-blue-300 transition-all duration-200 text-left group"
               >
                 <div className="flex items-center mb-3">
-                  <Folder className={`w-8 h-8 group-hover:text-blue-600 ${
-                    folder.shared || folder.name.startsWith('[Shared') 
-                      ? 'text-green-500' 
-                      : 'text-blue-500'
-                  }`} />
-                  {(folder.shared || folder.name.startsWith('[Shared')) && (
+                  <Folder
+                    className={`w-8 h-8 group-hover:text-blue-600 ${
+                      folder.shared || folder.name.startsWith("[Shared")
+                        ? "text-green-500"
+                        : "text-blue-500"
+                    }`}
+                  />
+                  {(folder.shared || folder.name.startsWith("[Shared")) && (
                     <div className="ml-2 px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
                       Shared
                     </div>
@@ -181,7 +183,9 @@ export function FolderPicker({
                   {folder.name}
                 </h3>
                 <p className="text-sm text-gray-500 mt-1">
-                  {folder.shared || folder.name.startsWith('[Shared') ? 'Shared Folder' : 'Folder'}
+                  {folder.shared || folder.name.startsWith("[Shared")
+                    ? "Shared Folder"
+                    : "Folder"}
                 </p>
               </button>
             ))}
