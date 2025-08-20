@@ -650,11 +650,17 @@ export function ComicReader({
 
       {/* Settings Panel */}
       {showSettings && (
-        <div className="absolute top-0 right-0 bg-black/90 text-white p-6 w-80 h-full overflow-y-auto">
+        <div 
+          className="absolute top-0 right-0 bg-black/90 text-white p-6 w-80 h-full overflow-y-auto z-20"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold">Reading Settings</h2>
             <button
-              onClick={() => setShowSettings(false)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowSettings(false);
+              }}
               className="text-gray-400 hover:text-white"
             >
               <X className="w-5 h-5" />
@@ -667,12 +673,14 @@ export function ComicReader({
               <label className="block text-sm font-medium mb-2">Fit Mode</label>
               <select
                 value={readingSettings.fitMode}
-                onChange={(e) =>
+                onChange={(e) => {
+                  e.stopPropagation();
                   onSettingsChange({
                     ...readingSettings,
                     fitMode: e.target.value as any,
-                  })
-                }
+                  });
+                }}
+                onClick={(e) => e.stopPropagation()}
                 className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white"
                 disabled={isContinuousMode}
               >
@@ -694,12 +702,14 @@ export function ComicReader({
               </label>
               <select
                 value={readingSettings.pageLayout}
-                onChange={(e) =>
+                onChange={(e) => {
+                  e.stopPropagation();
                   onSettingsChange({
                     ...readingSettings,
                     pageLayout: e.target.value as any,
-                  })
-                }
+                  });
+                }}
+                onClick={(e) => e.stopPropagation()}
                 className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white"
               >
                 <option value="single">Single Page</option>
@@ -715,12 +725,14 @@ export function ComicReader({
               </label>
               <select
                 value={readingSettings.readingDirection}
-                onChange={(e) =>
+                onChange={(e) => {
+                  e.stopPropagation();
                   onSettingsChange({
                     ...readingSettings,
                     readingDirection: e.target.value as any,
-                  })
-                }
+                  });
+                }}
+                onClick={(e) => e.stopPropagation()}
                 className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white"
               >
                 <option value="ltr">Left to Right</option>
@@ -736,12 +748,14 @@ export function ComicReader({
               <input
                 type="color"
                 value={readingSettings.backgroundColor}
-                onChange={(e) =>
+                onChange={(e) => {
+                  e.stopPropagation();
                   onSettingsChange({
                     ...readingSettings,
                     backgroundColor: e.target.value,
-                  })
-                }
+                  });
+                }}
+                onClick={(e) => e.stopPropagation()}
                 className="w-full h-10 bg-gray-800 border border-gray-600 rounded-lg"
               />
             </div>
@@ -752,12 +766,14 @@ export function ComicReader({
               <input
                 type="checkbox"
                 checked={readingSettings.showProgress}
-                onChange={(e) =>
+                onChange={(e) => {
+                  e.stopPropagation();
                   onSettingsChange({
                     ...readingSettings,
                     showProgress: e.target.checked,
-                  })
-                }
+                  });
+                }}
+                onClick={(e) => e.stopPropagation()}
                 className="w-4 h-4"
               />
             </div>
